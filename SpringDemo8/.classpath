@@ -17,5 +17,7 @@
 	<classpathentry kind="lib" path="spring/spring-tx-4.2.4.RELEASE.jar"/>
 	<classpathentry kind="lib" path="spring/spring-web-4.2.4.RELEASE.jar"/>
 	<classpathentry kind="lib" path="spring/spring-webmvc-4.2.4.RELEASE.jar"/>
+	<classpathentry kind="lib" path="commen/aopalliance.jar"/>
+	<classpathentry kind="lib" path="commen/cglib-3.2.5.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

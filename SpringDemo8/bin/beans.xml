@@ -2,37 +2,40 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
 	xsi:schemaLocation="
 		http://www.springframework.org/schema/beans
 		http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context
-		http://www.springframework.org/schema/context/spring-context-4.3.xsd"
+		http://www.springframework.org/schema/context/spring-context-4.2.4.xsd
+		http://www.springframework.org/schema/aop
+		http://www.springframework.org/schema/aop/spring-aop-4.2.4.xsd"
 	>
-	
-	<!--
-	第七节:自动扫描
-	***********************自动装配*******************************************
-	在上一节中我们可以解决bean的自动装配问题，也就是我们的bean的依赖注入，但
-	是我们在一般的项目中仍然会有较多的bean(其实这缘于做Java的都比较喜欢拆解)，
-	这就会导致我们用xml配置依然显得非常臃肿。
-	我们可以使用Spring提供的自动扫描机制，它可以在类路径下自动扫描标记了如下
-	几类的注解的类:
-	(1)@Service即服务层Bean。
-	(2)@Controller即控制器Bean。
-	(3)@Repository即持久层Bean。
-	(4)@Component即一般的组件，这类组件很难归类到上面中的一种。
-	要想使用自动扫描，我们只需要在beans.xml中执行两步操作:
-	(1)第一步修改beans标签中的context命令空间，而且需要添加对应的模式文件。
-	(2)第二部修改context:component-scan标签的内容。其格式如下:
-	
-	<context:component-scan base-package="包路径"></context:coponent-scan>
-	
-	不说废话了，让我们开始进入一个具体的实战范例吧。
-	-->
-	<context:component-scan base-package="com.mengzhidu.bean.service"></context:component-scan>
 	<!-- 
-	在上面的配置中，它会自动扫描"com.mengzhidu.bean.service"这个包里面的所有类，
-	并且把含有相关注释的Bean自动加载进来。
-	我们可以新建一个IRandomService接口，其代码内容如下所示:
+	
 	 -->
+	
+	<!-- 通知所对应的bean -->
+	<bean id="statisticsService" class="com.mengzhidu.bean.aop.StatisticsService"></bean>
+	
+	<!-- 目标对象所对应的bean -->
+	<bean id="askService" class="com.mengzhidu.bean.service.AskService"></bean>
+	
+	<!-- 切入点定义 -->
+	<bean id="askPointCut" class="org.springframework.aop.support.JdkRegexpMethodPointcut">
+		<property name="pattern" value=".*Ask"></property>
+	</bean>
+	
+	<!-- 通知和切点的结合 -->
+	<bean id="askAdvisor" class="org.springframework.aop.support.DefaultPointcutAdvisor">
+		<property name="advice" ref="statisticsService"></property>
+		<property name="pointcut" ref="askPointCut"></property>
+	</bean>
+	
+	<!-- 代理的定义 -->
+	<bean id="askProxy" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="target" ref="askService"></property>
+		<property name="interceptorNames" value="askAdvisor"></property>
+	</bean>
+
 </beans>
