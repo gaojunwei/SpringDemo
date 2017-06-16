@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd"
+	default-autowire="byName">
+	
+	<!--
+	第六节:自动装配
+	********************自动装配**********************************************
+	我们前面是通过xml配置的方式来实现的依赖注入，其实我们还可以用注解的方式来
+	实现，这样我们就可以做到自动装配。
+	自动装配有几种方式，它需要在beans这个标签中添加default-autowire="xxx"这个
+	配置项，其中xxx的比较常见的取值有三种，分别如下所示:
+	第一种即byName，它表示根据属性名自动装配。它会寻找xml中的名称与属性名
+	完全一致的bean，并将其与属性自动装配。
+	第二种即byType，它表示根究类型自动装配。如果容器中存在一个与xml配置中属
+	性类型相同的bean，那么将与该属性自动装配，如果存在多个该类型的bean，那么
+	会抛出异常，并且指出不能使用byType方式进行自动装配，如果没有找到相匹配的
+	bean，则什么事都不发生。
+	第三种即Constructor，它与byType方式类似，不同之处在于它应用于构造函数的
+	参数。如果容器中没有找到与构造器参数类型一直的bean，那么就会抛出异常。
+	一般来说，比较常用的就是byName和byType这两种方式。
+	-->
+	<bean id="pathDao" class="com.mengzhidu.bean.dao.PathDao"></bean>
+	<bean id="pathService" class="com.mengzhidu.bean.service.PathService"></bean>
+	
+</beans>

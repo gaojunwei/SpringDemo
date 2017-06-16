@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<!--
+	(1)scope表示其作用域。
+	(2)init-method表示其初始化方法。
+	(3)destroy-method表示其销毁方法。
+	-->
+	<!--
+	bean常用的作用域(即scope的常用的取值)有如下几个:
+	(1)singleton即单例模式，一个Bean容器中只存在一个实例，这也是scope默认的取
+	值。它在应用启动的时候创建实例，在应用结束的时候被销毁。
+	(2)prototype即原型模式，它是每次请求都会创建新的实例。而且destroy-method即
+	销毁方法是无效的。
+	(3)request即请求模式，它在每次http请求时创建一个实例，并且只在当前的请求
+	内有效。
+	(4)session即会话模式，它是每次http请求时创建一个实例，在当前会话内有效。
+	后面两个是只对Web开发有效的，它是为Web开发量身打造的。
+	 -->
+	<bean id="courseService" class="com.mengzhidu.bean.service.CourseService" 
+		init-method="initCourse" destroy-method="destroyCourse" scope="prototype" />
+	
+	<!-- Demo3 第二节:bean配置 -->
+	<bean id="configService" class="com.mengzhidu.bean.service.ConfigService"
+		init-method="init" destroy-method="destroy" scope="singleton"/>
+	<bean id="pdfService" class="com.mengzhidu.bean.service.PdfService"
+		init-method="init" destroy-method="destroy" scope="prototype"/>
+	<!-- end -->
+	
+	<!-- Demo4 第三节:依赖关系(没有真正的实现面向接口编程，耦合度太高) -->
+	<!-- <bean id="commentService" class="com.mengzhidu.bean.service.CommentService" /> -->
+	<!-- end -->
+	<!-- Demo4 第四节:依赖注入 -->
+	<!-- a、设值注入。它需要被注入的类有一个属性的setter方法。 -->
+	<!-- <bean id="commentDao" class="com.mengzhidu.bean.dao.CommentDao"/>
+	<bean id="commentService" class="com.mengzhidu.bean.service.CommentService" >
+		<property name="commentDao" ref="commentDao"/>
+	</bean> -->
+	<!-- b、通过构造注入。 -->
+	<bean id="commentDao" class="com.mengzhidu.bean.dao.CommentDao"/>
+	<bean id="commentService" class="com.mengzhidu.bean.service.CommentService" >
+		<constructor-arg name="commentDao" ref="commentDao"/>
+	</bean>
+	<!-- end -->
+	
+</beans>
