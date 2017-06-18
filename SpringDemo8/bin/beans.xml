@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context-4.2.4.xsd
+		http://www.springframework.org/schema/aop
+		http://www.springframework.org/schema/aop/spring-aop-4.2.4.xsd"
+	>
+	<!-- 
+	第二节:指定代理
+	*********************实现思路***************************************
+	AOP是一个思想，它的实现方式有很多，我们这里就介绍一种代理的实现方式，老
+	实说，这种实现方式有点繁琐，但是它却相对比较好理解。
+	既然是基于代理的，那可能就需要一系列的类去实现代理功能，而且这些类Spring就
+	帮我们实现好了，所以我们只需要进行相应的配置即可。
+	需要特殊说明的是，我们这里获取的是代理的bean，而不是原来的bean，
+	也就是我们只有被代理的bean才实现了各种通知。
+	 -->
+	
+	<!-- 通知所对应的bean -->
+	<bean id="statisticsService" class="com.mengzhidu.bean.aop.StatisticsService"></bean>
+	
+	<!-- 目标对象所对应的bean -->
+	<bean id="askService" class="com.mengzhidu.bean.service.AskService"></bean>
+	
+	<!-- 切入点定义 -->
+	<bean id="askPointCut" class="org.springframework.aop.support.JdkRegexpMethodPointcut">
+		<property name="pattern" value=".*Ask"></property>
+	</bean>
+	
+	<!-- 通知和切点的结合 -->
+	<bean id="askAdvisor" class="org.springframework.aop.support.DefaultPointcutAdvisor">
+		<property name="advice" ref="statisticsService"></property>
+		<property name="pointcut" ref="askPointCut"></property>
+	</bean>
+	
+	<!-- 代理的定义 -->
+	<bean id="askProxy" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="target" ref="askService"></property>
+		<property name="interceptorNames" value="askAdvisor"></property>
+	</bean>
+
+</beans>

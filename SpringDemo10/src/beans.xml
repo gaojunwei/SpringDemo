@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/aop
+		http://www.springframework.org/schema/aop/spring-aop-4.3.xsd"
+	>
+	<!-- 
+	第四节:AspectJ
+	*************************提前准备***********************************
+	对于AOP的实现，除了Spring的实现之外，此外还有大名鼎鼎AspectJ的实现，不
+	过不得不说的是，虽然Spring兼容AspectJ的实现方式，但是我们还需要额外的下载
+	一个jar包。
+	对于这个jar包，它的名字是"aspectjweaver.jar"，由于这是一个比较知名的jar包，
+	因此可以用搜索引擎搜索其下载地址。
+	在上面的配置中，我们有一个expression="xxxx"的表达式，这里的*
+	com.mengzhidu.bean.service.LoginService.*(..)中的第一个星表示所有的返回值类型，
+	第二个星表示所有的方法，而小括号的两个点表示所有的参数类型。
+	 -->
+	<!-- 其他配置项 -->
+	<bean id="countService" class="com.mengzhidu.bean.aop.CountService"></bean>
+	<bean id="loginService" class="com.mengzhidu.bean.service.LoginService"></bean>
+	<aop:config>
+		<aop:aspect id="statistics" ref="countService">
+			<aop:pointcut expression="execution(* com.mengzhidu.bean.service.LoginService.*(..))" id="allService"/>
+			<aop:before method="before" pointcut-ref="allService" />
+		</aop:aspect>
+	</aop:config>
+	<!-- 其他配置项 -->
+</beans>

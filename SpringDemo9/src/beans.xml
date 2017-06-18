@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context-4.2.4.xsd
+		http://www.springframework.org/schema/aop
+		http://www.springframework.org/schema/aop/spring-aop-4.2.4.xsd"
+	>
+	<!-- 
+	第三节:自动代理
+	***********************实现解读*******************************************
+	这种方式，它无需我们配置代理，它还是使用原来的bean，Spring通过内部的机制
+	去实现自动的扫描，它让配置的过程简化了很多。
+	 -->
+	
+	<!-- 通知所对应的bean -->
+	<bean id="archiveService" class="com.mengzhidu.bean.aop.ArchiveService" />
+	
+	<!-- 目标对象所对应的bean -->
+	<bean id="regService" class="com.mengzhidu.bean.service.RegService" />
+	
+	<!-- 通知和切入点的结合 -->
+	<bean id="archiveAdvisor" class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+		<property name="advice" ref="archiveService"></property>
+		<property name="pattern" value=".*"></property>
+	</bean>
+	
+	<!-- 默认的代理组件 -->
+	<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"/>
+	<!-- 其他配置项 -->
+
+</beans>
